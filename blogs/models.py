@@ -15,7 +15,7 @@ class BlogPosts(models.Model):
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     difficultyLevel = models.CharField(max_length=100,choices=difficulty, default=1)
     title = models.CharField(max_length=200)
-    topic = models.ForeignKey(Topics, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     text = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -30,7 +30,7 @@ class BlogPosts(models.Model):
 
 
 
-class BlogImages(models.Model):
+class BlogImage(models.Model):
     blog = models.ForeignKey(BlogPosts,on_delete=models.CASCADE)
     image = models.ImageField(null=True)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -38,3 +38,10 @@ class BlogImages(models.Model):
 
     def __unicode__(self):
         return self.image
+    
+class PersonTest(models.Model):
+    first_name = models.CharField(max_length=33)
+    last_name = models.CharField(max_length=33)
+    
+    def __str__(self):
+        return first_name

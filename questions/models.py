@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Topics(models.Model):
+class Topic(models.Model):
     topic = models.CharField(max_length=100, null=False)
     active = models.NullBooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -11,9 +11,9 @@ class Topics(models.Model):
         return self.topic
 
 
-class SubTopics(models.Model):
+class SubTopic(models.Model):
     subTopic = models.CharField(max_length=100, null=False)
-    topic = models.ForeignKey(Topics, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     active = models.NullBooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -22,7 +22,7 @@ class SubTopics(models.Model):
         return self.subTopic
 
 
-class Questions(models.Model):
+class Question(models.Model):
     questionType = (
         (1, ('subjective')),
         (2, ('objetive'))
@@ -33,9 +33,9 @@ class Questions(models.Model):
         (3,('Hard'))
     )
     question = models.CharField(max_length=2000, null=False)
-    type = models.CharField(max_length=100,choices=questionType)
-    topic = models.ForeignKey(Topics,on_delete=models.CASCADE,null=True)
-    subTopic = models.ForeignKey(SubTopics,on_delete=models.CASCADE,null=True)
+    questionType = models.CharField(max_length=100,choices=questionType)
+    topic = models.ForeignKey(Topic,on_delete=models.CASCADE,null=True)
+    subTopic = models.ForeignKey(SubTopic,on_delete=models.CASCADE,null=True)
     difficultyLevel = models.CharField(max_length=100,choices=difficulty,default=1)
     totalAttempt = models.PositiveIntegerField(null=True)
     totalCurrectAttempt = models.PositiveIntegerField(null=True)
@@ -52,8 +52,8 @@ class Questions(models.Model):
 
 
 
-class QuestionImages(models.Model):
-    question = models.ForeignKey(Questions, on_delete=models.CASCADE)
+class QuestionImage(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
     image = models.ImageField(null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -63,12 +63,12 @@ class QuestionImages(models.Model):
 
 
 
-class QuestionAnswers(models.Model):
+class QuestionAnswer(models.Model):
     questionType = (
         (1,('subjective')),
         (2,('objetive'))
     )
-    question = models.ForeignKey(Questions,on_delete=models.CASCADE)
+    question = models.ForeignKey(Question,on_delete=models.CASCADE)
     answer = models.CharField(max_length=1000,null=True)
     answer_sequence = models.PositiveIntegerField(null=False)
     answerType = models.PositiveIntegerField(choices=questionType,default=1)

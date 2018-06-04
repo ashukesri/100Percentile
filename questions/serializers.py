@@ -1,30 +1,41 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import Topics,SubTopics,Questions,QuestionImages,QuestionAnswers
+from .models import Topic,SubTopic,Question,QuestionImage,QuestionAnswer
 
-class TopicsSerializer(ModelSerializer):
+class TopicSerializer(ModelSerializer):
     class Meta:
-        model = Topics
+        model = Topic
         fields= [
             'topic',
             'active',
         ]
+        
 
-class SubTopicsSerializer(ModelSerializer):
+class SubTopicSerializer(ModelSerializer):
     class Meta:
-        model = SubTopics
+        model = SubTopic
         fields= [
             'subTopic',
             'topic',
             'active',
         ]
+        
 
-class QuestionsSerializer(ModelSerializer):
+class QuestionImageSerializer(ModelSerializer):
     class Meta:
-        model = Questions
+        model = QuestionImage
         fields= [
             'question',
-            'type',
+            'image',
+        ]
+        
+
+class QuestionSerializer(ModelSerializer):
+    class Meta:
+        model = Question
+        fields= [
+            'question',
+            'questionType',
             'topic',
             'subTopic',
             'difficultyLevel',
@@ -35,20 +46,42 @@ class QuestionsSerializer(ModelSerializer):
             'videoLink',
             'active',
         ]
+    
+    
+class QuestionAndImageSerializer(ModelSerializer):
+    image = QuestionImageSerializer(source='taskimage_set', many=True, read_only=True)
 
-        
-class QuestionImagesSerializer(ModelSerializer):
     class Meta:
-        model = QuestionImages
+        model = Question
         fields= [
             'question',
+            'questionType',
+            'topic',
+            'subTopic',
+            'difficultyLevel',
+            'totalAttempt',
+            'totalCurrectAttempt',
+            'is_subscribed',
+            'thrasoldTime',
+            'videoLink',
+            'active',
             'image',
         ]
+#        read_only_fields = ('id',)
+
+    def create(self, validated_data):
+        image_data = self.context.get('view').request.FILES
+        question= Question.objects.create(**validated_data)
+        for image_data in image_data.values():
+            BlogImage.objects.create(question=question, image=image_data)
+            
+        return question
+
         
-        
-class QuestionAnswersSerializer(ModelSerializer):
+
+class QuestionAnswerSerializer(ModelSerializer):
     class Meta:
-        model = QuestionAnswers
+        model = QuestionAnswer
         fields= [
             'question',
             'answer',

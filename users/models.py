@@ -5,8 +5,8 @@ from questions.models import *
 
 class UserProfile(models.Model):
     roleAraay = (
-        (1,('Admin')),
-        (2,('Visitor'))
+        ('1',('Admin')),
+        ('2',('Visitor'))
     )
     user = models.OneToOneField(User, primary_key=True)
     role = models.CharField(max_length=100,choices=roleAraay,default=2)
@@ -22,8 +22,8 @@ class UserProfile(models.Model):
 
 
 class UserAnswer(models.Model):
-    question = models.ForeignKey(Questions,null=False)
-    answer = models.ForeignKey(QuestionAnswers,null=False)
+    question = models.ForeignKey(Question,null=False)
+    answer = models.ForeignKey(QuestionAnswer,null=False)
     answer_sequence = models.PositiveIntegerField(null=True)
     user = models.ForeignKey(UserProfile)
     active = models.NullBooleanField(default=True)
