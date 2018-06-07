@@ -13,43 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url,include
 from django.contrib import admin
-
-from blogs.views import(AddPostCreateAPIView,
-                        BlogImageCreateAPIView,
-                        BlogImageListAPIView,
-                        BlogImageRUDAPIView,
-                        BlogPostRUDAPIView,
-                        BlogPostListAPIView,)
-                         
-from questions.views import(AddQuestionCreateAPIView,
-                        QuestionListAPIView,
-                        QuestionRUDAPIView,
-                        QuestionImageCreateAPIView,
-                        QuestionImageListAPIView,
-                        QuestionImageRUDAPIView,
-                        TopicCreateAPIView
-                        TopicRUDAPIView,
-                        SubTopicCreateAPIView,
-                        SubTopicRUDAPIView,
-                        )
+            
                     
-                    
-urlpatterns = [
-    url(r'^blog/posts$'                     ,BlogPostListAPIView.as_view()     ,name="posts"),
-    url(r'blog/post-add'                    ,AddPostCreateAPIView.as_view()    ,name="post_create"),
-    url(r'blog/post-edit/(?P<pk>\d+)/'      ,BlogPostRUDAPIView.as_view()      ,name="post_edit"),
-    url(r'^blog/post-images$'                ,BlogImageListAPIView.as_view()    ,name="post_image"),
-    url(r'blog/post-add-image'              ,BlogImageCreateAPIView.as_view()  ,name="post_add_image"),
-    url(r'blog/post-edit-image/(?P<pk>\d+)/',BlogImageRUDAPIView.as_view()     ,name="post_edit_image"),
-    
-    url(r'^question/questions$'                     ,QuestionListAPIView.as_view()         ,name="questions"),
-    url(r'question/question-create'                 ,AddQuestionCreateAPIView.as_view()    ,name="question_create"),
-    url(r'question/question-edit/(?P<pk>\d+)/'      ,QuestionRUDAPIView.as_view()          ,name="question_edit"),
-#    url(r'^question/post-image$'                     ,QuestionImageListAPIView.as_view()    ,name="question_image"),
-    url(r'question/question-add-image'              ,QuestionImageCreateAPIView.as_view()  ,name="question_add_image"),
-    url(r'question/question-edit-image/(?P<pk>\d+)/',QuestionImageRUDAPIView.as_view()     ,name="question_edit_image"),  
-    
+urlpatterns = [ 
+    url(r'^blog/', include('blogs.urls')),
+    url(r'^user/', include('users.urls')),
+    url(r'^question/', include('questions.urls')),
     url(r'^admin/'      , admin.site.urls),
 ]

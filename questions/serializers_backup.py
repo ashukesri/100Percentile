@@ -43,8 +43,9 @@ class QuestionAnswerSerializer(ModelSerializer):
         
 
 class QuestionSerializer(ModelSerializer):
+#    image = QuestionImageSerializer(source='taskimage_set', many=True, read_only=True)
     QuestionImages=QuestionImageSerializer(many=True, read_only=True)
-    QuestionAnswers=QuestionAnswerSerializer(many=True , read_only=True)
+    QuestionAnswers=QuestionAnswerSerializer(many=True)
     class Meta:
         model = Question
         fields= [
@@ -65,15 +66,28 @@ class QuestionSerializer(ModelSerializer):
         ]
         read_only_fields = ('totalAttempt','totalCorrectAttempt')
         
+#    def validate(self, data):
+#
+#        if data['questionType'] ==1 and QuestionAnswers==True:
+#            raise serializers.ValidationError("You are accessing options for subjective question")
+#        return data
+
     def create(self, validated_data):
         images_data = self.context.get('view').request.FILES
+#        request = self.context.get('request')
         question= Question.objects.create(**validated_data)
         for image_data in images_data.values():
             QuestionImage.objects.create(question=question, image=image_data)
-                
+            
+#        if request.data.get('QuestionAnswers'):
+#            QuestionAnswers_data = request.data.get('QuestionAnswers')
+#            for QuestionAnswer_data in QuestionAnswers_data:
+#                QuestionAnswer.objects.create(question=question, **QuestionAnswer_data)
+        
         return question
 
     def update(self, instance, validated_data):
+        images_data = self.context.get('view').request.FILES
         
         instance.question = validated_data.get("question", instance.question)
         instance.questionType = validated_data.get("questionType", instance.questionType)

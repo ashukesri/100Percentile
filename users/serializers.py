@@ -1,10 +1,10 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import UserAnswer
+from .models import UserAnswer,Profile
 
-class UserProfileSerializer(ModelSerializer):
+class ProfileSerializer(ModelSerializer):
     class Meta:
-        model = UserProfile
+        model = Profile
         fields= [
             'user',
             'role',

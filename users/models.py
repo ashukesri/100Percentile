@@ -1,31 +1,41 @@
 from django.db import models
 from django.contrib.auth.models import User
 from questions.models import *
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-
-class UserProfile(models.Model):
+class Profile(models.Model):
     roleAraay = (
         ('1',('Admin')),
-        ('2',('Visitor'))
+        ('2',('Publisher')),
+        ('3',('Reviewer')),
+        ('4',('Visitor'))
     )
-    user = models.OneToOneField(User, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+#    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     role = models.CharField(max_length=100,choices=roleAraay,default=2)
     active = models.BooleanField(default=True)
     is_subscribed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
 
-    def __unicode__(self):
-        return self.role
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
+#    users = User.objects.all().select_related('profile')
 
 
 class UserAnswer(models.Model):
     question = models.ForeignKey(Question,null=False)
     answer = models.ForeignKey(QuestionAnswer,null=False)
-    answer_sequence = models.PositiveIntegerField(null=True)
-    user = models.ForeignKey(UserProfile)
+    answer_sequence = models.PositiveIntegerField(null=True) #questions id
+    user = models.ForeignKey(User)
     active = models.NullBooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

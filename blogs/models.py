@@ -6,14 +6,14 @@ from django.db import models
 from django.utils import timezone
 
 
-class BlogPosts(models.Model):
+class BlogPost(models.Model):
     difficulty = (
-        (1, ('Basic')),
-        (2, ('Mediam')),
-        (3, ('Hard'))
+        ('1', ('Basic')),
+        ('2', ('Mediam')),
+        ('3', ('Hard'))
     )
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    difficultyLevel = models.CharField(max_length=100,choices=difficulty, default=1)
+    author = models.ForeignKey(User, on_delete=models.CASCADE ,related_name="BlogPosts")
+    difficultyLevel = models.CharField(max_length=100,choices=difficulty, default='1')
     title = models.CharField(max_length=200)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     text = models.TextField()
@@ -31,13 +31,14 @@ class BlogPosts(models.Model):
 
 
 class BlogImage(models.Model):
-    blog = models.ForeignKey(BlogPosts,on_delete=models.CASCADE)
+    blog = models.ForeignKey(BlogPost,on_delete=models.CASCADE,related_name='BlogImages')
     image = models.ImageField(null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return self.image
+
     
 class PersonTest(models.Model):
     first_name = models.CharField(max_length=33)
