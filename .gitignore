@@ -1,2 +1,7 @@
 notes.txt
 db.sqlite3
+ngrok
+db.sqlite3_backup
+users/migrations/
+blogs/migrations/
+questions/migrations

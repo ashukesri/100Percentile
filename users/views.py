@@ -61,7 +61,7 @@ class ProfileListAPIView(ListAPIView):
     
 class UserAnswerCreateAPIView(CreateAPIView):
     queryset = UserAnswer.objects.all()
-#    serializer_class = UserAnswerSerializer
+    serializer_class = UserAnswerSerializer
     permission_classes =  [IsAuthenticated]
     
     def perform_create(self,serializer):

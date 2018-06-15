@@ -33,8 +33,9 @@ class Profile(models.Model):
 
 class UserAnswer(models.Model):
     question = models.ForeignKey(Question,null=False)
-    answer = models.ForeignKey(QuestionOption,null=False)
-#    answer_sequence = models.PositiveIntegerField(null=True) #questions id
+    answer = models.ForeignKey(QuestionOption,null=False,blank=True)
+    subjective_answer = models.CharField(max_length=200,blank=True)
+
     user = models.ForeignKey(User)
     active = models.NullBooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
