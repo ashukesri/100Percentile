@@ -19,7 +19,7 @@ from .views import( AddPostCreateAPIView,
                     BlogImageRUDAPIView,
                     BlogPostRUDAPIView,
                     BlogPostListAPIView,
-                    UserBlogPostListAPIView,
+                   UserBlogPostListAPIView,
 #                    BlogImageCreateAPIView,
 #                    BlogImageListAPIView,                  
                   )
@@ -28,7 +28,7 @@ from .views import( AddPostCreateAPIView,
                     
 urlpatterns = [
     url(r'^$'                          ,BlogPostListAPIView.as_view()     ,name="posts"),
-    url(r'user'                        ,UserBlogPostListAPIView.as_view()    ,name="user_post"),
+    url(r'user'                          ,UserBlogPostListAPIView.as_view()     ,name="user_posts"),
     url(r'post-add'                    ,AddPostCreateAPIView.as_view()    ,name="post_create"),
     url(r'post-edit/(?P<pk>\d+)/'      ,BlogPostRUDAPIView.as_view()      ,name="post_edit"),
     url(r'post-edit-image/(?P<pk>\d+)/',BlogImageRUDAPIView.as_view()     ,name="post_edit_image"),

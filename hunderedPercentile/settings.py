@@ -37,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'blogs',
     'questions',
     'users',
-    'rest_framework'
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,27 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'hunderedPercentile.urls'
 
+REST_FRAMEWORK={
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+#    'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticated',)
+#    }
+#REST_FRAMEWORK = {
+#    'DEFAULT_RENDERER_CLASSES': (
+#        'rest_framework.renderers.JSONRenderer',
+#        'rest_framework.renderers.BrowsableAPIRenderer',
+#    ),
+
+#    'DEFAULT_AUTHENTICATION_CLASSES': (
+#        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+#    ),
+
+}
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

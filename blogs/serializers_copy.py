@@ -46,6 +46,11 @@ class BlogPostAndImagesSerializer(ModelSerializer):
             user.text= user_data.get("text", user.text)
             user.save()
 
+            
+#        ('1',('Admin')),
+#        ('2',('Publisher')),
+#        ('3',('Reviewer')),
+#        ('4',('Visitor'))
 
 #class BlogPostAndImagesSerializer(ModelSerializer):
 #    blog=BlogPostsSerializer(required=True)

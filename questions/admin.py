@@ -5,6 +5,6 @@ from questions.models import *
 
 admin.site.register(Question)
 admin.site.register(QuestionImage)
-admin.site.register(QuestionAnswer)
+admin.site.register(QuestionOption)
 admin.site.register(Topic)
 admin.site.register(SubTopic)

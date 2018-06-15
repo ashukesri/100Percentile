@@ -11,13 +11,13 @@ class Profile(models.Model):
         ('3',('Reviewer')),
         ('4',('Visitor'))
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-#    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    role = models.CharField(max_length=100,choices=roleAraay,default=2)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    role = models.CharField(max_length=100,choices=roleAraay,default='4')
     active = models.BooleanField(default=True)
     is_subscribed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    follow= models.ManyToManyField(User,blank=False, related_name="profile_follow")
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -33,8 +33,8 @@ class Profile(models.Model):
 
 class UserAnswer(models.Model):
     question = models.ForeignKey(Question,null=False)
-    answer = models.ForeignKey(QuestionAnswer,null=False)
-    answer_sequence = models.PositiveIntegerField(null=True) #questions id
+    answer = models.ForeignKey(QuestionOption,null=False)
+#    answer_sequence = models.PositiveIntegerField(null=True) #questions id
     user = models.ForeignKey(User)
     active = models.NullBooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -43,3 +43,16 @@ class UserAnswer(models.Model):
 
     def __unicode__(self):
         return self.role
+    
+#class Follow(models.Model):
+#    follower= models.ForeignKey(User, on_delete=models.CASCADE)
+#    following= models.ForeignKey(User, on_delete=models.CASCADE)
+#    
+    
+    
+    
+    
+    
+    
+    
+    
