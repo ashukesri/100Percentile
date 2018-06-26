@@ -58,3 +58,10 @@ class PersonTest(models.Model):
     
     def __str__(self):
         return first_name
+    
+class BlogPostDiscussion(models.Model):
+    question = models.ForeignKey(BlogPost,on_delete=models.CASCADE,related_name='BlogPostDiscussions')
+    user = models.ForeignKey(User, on_delete=models.CASCADE ,related_name="BlogPostDiscussionUser")
+    comment = models.TextField(blank=False)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

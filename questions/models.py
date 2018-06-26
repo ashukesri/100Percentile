@@ -69,7 +69,6 @@ class Question(models.Model):
         return self.question
 
 
-
 class QuestionImage(models.Model):
     
     question = models.ForeignKey(Question, on_delete=models.CASCADE,related_name='QuestionImages')
@@ -80,8 +79,25 @@ class QuestionImage(models.Model):
     def __unicode__(self):
         return self.image
 
+#######################################################
+class QuestionSolution(models.Model):
+    question = models.ForeignKey(Question,on_delete=models.CASCADE,related_name='QuestionSolutions')
+    author = models.ForeignKey(User, on_delete=models.CASCADE ,related_name="Solution_User")
+    solution=models.TextField(blank=False)
+    image = models.ImageField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    
+class QuestionDiscussion(models.Model):
+    question = models.ForeignKey(Question,on_delete=models.CASCADE,related_name='QuestionDiscussions')
+    user = models.ForeignKey(User, on_delete=models.CASCADE ,related_name="QuestionDiscussionUser")
+    comment = models.TextField(blank=False)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-
+    
+#########################################################
 class QuestionOption(models.Model):
 
     question = models.ForeignKey(Question,on_delete=models.CASCADE,related_name='QuestionOptions')

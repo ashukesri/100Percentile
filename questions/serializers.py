@@ -1,6 +1,10 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
-from .models import Topic,SubTopic,Question,QuestionImage,QuestionOption
+from .models import (
+    Topic,SubTopic,Question,QuestionImage,QuestionOption,
+    QuestionSolution,
+    QuestionDiscussion,
+)
 
 class TopicSerializer(ModelSerializer):
     class Meta:
@@ -18,6 +22,29 @@ class SubTopicSerializer(ModelSerializer):
             'subTopic',
             'topic',
             'active',
+        ]
+
+class QuestionSolutionSerializer(ModelSerializer):
+    class Meta:
+        model = QuestionSolution
+        fields= [
+            'question',
+            'author',
+            'solution',
+            'image',
+            'created_at',
+            'updated_at',
+        ]
+        
+class QuestionDiscussionSerializer(ModelSerializer):
+    class Meta:
+        model = QuestionDiscussion
+        fields= [
+            'question',
+            'user',
+            'comment',
+            'created_at',
+            'updated_at',
         ]
         
 

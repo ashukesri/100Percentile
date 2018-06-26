@@ -7,3 +7,4 @@ from blogs.models import *
 #
 admin.site.register(BlogPost)
 admin.site.register(BlogImage)
+admin.site.register(BlogPostDiscussion)

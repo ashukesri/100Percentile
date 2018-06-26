@@ -1,10 +1,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView
+from rest_framework.generics import(
+    CreateAPIView,
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView, 
+    ListAPIView, 
+    RetrieveAPIView,
+)
 from django.db.models import Q
-from .models import BlogPost,BlogImage
-from .serializers import BlogPostSerializer, BlogImageSerializer
+from .models import (
+    BlogPost,
+    BlogImage,
+    BlogPostDiscussion,
+)
+from .serializers import (
+    BlogPostSerializer,
+    BlogImageSerializer,
+    BlogPostDiscussionSerializer,
+)
 from .permissions import BlogPostListPermission, BlogPostPermission 
 from django.contrib.auth.models import User
 from rest_framework import serializers
@@ -49,7 +63,21 @@ class UserBlogPostListAPIView(ListAPIView):
             return BlogPost.objects.filter(Q(status=3)| Q(status=4))
         else:
             return BlogPost.objects.all()
+        
+##########################################################################
 
+class BlogPostDiscussionCreateAPIView(ListCreateAPIView):
+    queryset = BlogPostDiscussion.objects.all()
+    serializer_class = BlogPostDiscussionSerializer
+    permission_classes =  [IsAuthenticated]
+    
+class BlogPostDiscussionRUDAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = BlogPostDiscussion.objects.all()
+    serializer_class = BlogPostDiscussionSerializer
+    permission_classes =  [IsAuthenticatedOrReadOnly]
+
+    
+##########################################################################
 
 class BlogPostRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = BlogPost.objects.all()

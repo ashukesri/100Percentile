@@ -1,17 +1,27 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView,ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView
 from django.contrib.auth.models import User
 from django.db.models import Q
 
-from .models import Topic,SubTopic,Question,QuestionImage,QuestionOption
+from .models import (
+    Topic,
+    SubTopic,
+    Question,
+    QuestionImage,
+    QuestionOption,
+    QuestionSolution,
+    QuestionDiscussion,
+)
 
 from .serializers import (
     TopicSerializer,
     SubTopicSerializer,
     QuestionSerializer,
     QuestionImageSerializer,
-    QuestionOptionSerializer
+    QuestionOptionSerializer,
+    QuestionSolutionSerializer,
+    QuestionDiscussionSerializer,
     )
 
 from rest_framework.permissions import(
@@ -30,6 +40,30 @@ class TopicRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
     permission_classes =  [IsAdminUser,IsAuthenticatedOrReadOnly]
+    
+##########################################################################
+class QuestionSolutionCreateAPIView(ListCreateAPIView):
+    queryset = QuestionSolution.objects.all()
+    serializer_class = QuestionSolutionSerializer
+    permission_classes =  [IsAdminUser]
+    
+class QuestionSolutionRUDAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = QuestionSolution.objects.all()
+    serializer_class = QuestionSolutionSerializer
+    permission_classes =  [IsAdminUser,IsAuthenticatedOrReadOnly]
+
+    
+##########################################################################
+
+class QuestionDiscussionCreateAPIView(ListCreateAPIView):
+    queryset = QuestionDiscussion.objects.all()
+    serializer_class = QuestionDiscussionSerializer
+    permission_classes =  [IsAuthenticated]
+    
+class QuestionDiscussionRUDAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = QuestionDiscussion.objects.all()
+    serializer_class = QuestionDiscussionSerializer
+    permission_classes =  [IsAuthenticatedOrReadOnly]
 
     
 ##########################################################################
@@ -37,12 +71,12 @@ class TopicRUDAPIView(RetrieveUpdateDestroyAPIView):
 class SubTopicCreateAPIView(CreateAPIView):
     queryset = SubTopic.objects.all()
     serializer_class = SubTopicSerializer
-    permission_classes =  [IsAdminUser]
+    permission_classes =  [IsAuthenticated]
     
 class SubTopicRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = SubTopic.objects.all()
     serializer_class = SubTopicSerializer
-    permission_classes =  [IsAdminUser,IsAuthenticatedOrReadOnly]
+    permission_classes =  [IsAuthenticatedOrReadOnly]
 
 
 ##########################################################################

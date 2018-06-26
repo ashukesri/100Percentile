@@ -1,6 +1,10 @@
 from rest_framework.serializers import ModelSerializer, StringRelatedField
 from rest_framework import serializers
-from .models import BlogPost,BlogImage
+from .models import (
+    BlogPost,
+    BlogImage,
+    BlogPostDiscussion,
+)
 
 
 class BlogImageSerializer(ModelSerializer):
@@ -12,6 +16,17 @@ class BlogImageSerializer(ModelSerializer):
             'image',
         ]
 
+class BlogPostDiscussionSerializer(ModelSerializer):
+    class Meta:
+        model = BlogPostDiscussion
+        fields= [
+            'question',
+            'user',
+            'comment',
+            'created_at',
+            'updated_at',
+        ]
+        
 class BlogPostSerializer(ModelSerializer):
 #    image = BlogImageSerializer(source='taskimage_set', many=True, read_only=True)
     BlogImages=BlogImageSerializer(many=True, read_only=True)
