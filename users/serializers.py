@@ -79,8 +79,8 @@ class ProfileSerializer(ModelSerializer):
         fields=[
             'role' ,
 #            'active',
-#            'follow',
-            'follower',
+            'follow',
+#            'follower',
             'is_subscribed',
             'user',
         ]
