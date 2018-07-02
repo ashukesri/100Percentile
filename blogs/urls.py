@@ -33,9 +33,9 @@ from .views import(
 urlpatterns = [
     url(r'^$'                           ,BlogPostListAPIView.as_view()              ,name="posts"),
     url(r'user'                         ,UserBlogPostListAPIView.as_view()          ,name="user_posts"),
-    url(r'post-add'                     ,AddPostCreateAPIView.as_view()             ,name="post_create"),
-    url(r'post-edit/(?P<pk>\d+)/'       ,BlogPostRUDAPIView.as_view()               ,name="post_edit"),
-    url(r'post-edit-image/(?P<pk>\d+)/' ,BlogImageRUDAPIView.as_view()              ,name="post_edit_image"),
+    url(r'add'                          ,AddPostCreateAPIView.as_view()             ,name="post_create"),
+    url(r'edit/(?P<pk>\d+)/'            ,BlogPostRUDAPIView.as_view()               ,name="post_edit"),
+    url(r'edit-image/(?P<pk>\d+)/'      ,BlogImageRUDAPIView.as_view()              ,name="post_edit_image"),
     
     url(r'discussion-create'            ,BlogPostDiscussionCreateAPIView.as_view()  ,name="discussion_create"),
     url(r'discussion-edit/(?P<pk>\d+)'  ,BlogPostDiscussionRUDAPIView.as_view()     ,name="discussion_edit"),

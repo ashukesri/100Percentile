@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
+import re
 
+def question_directory_path(instance, filename):
+    return 'question/'+re.sub('[-:. ]','',str(datetime.today()))
+ 
 
 class Topic(models.Model):
     topic = models.CharField(max_length=100, null=False)
@@ -72,7 +77,7 @@ class Question(models.Model):
 class QuestionImage(models.Model):
     
     question = models.ForeignKey(Question, on_delete=models.CASCADE,related_name='QuestionImages')
-    image = models.ImageField(null=True)
+    image = models.ImageField(upload_to=question_directory_path,null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -84,7 +89,7 @@ class QuestionSolution(models.Model):
     question = models.ForeignKey(Question,on_delete=models.CASCADE,related_name='QuestionSolutions')
     author = models.ForeignKey(User, on_delete=models.CASCADE ,related_name="Solution_User")
     solution=models.TextField(blank=False)
-    image = models.ImageField(null=True)
+    image = models.ImageField(upload_to=question_directory_path,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -93,7 +98,7 @@ class QuestionDiscussion(models.Model):
     question = models.ForeignKey(Question,on_delete=models.CASCADE,related_name='QuestionDiscussions')
     user = models.ForeignKey(User, on_delete=models.CASCADE ,related_name="QuestionDiscussionUser")
     comment = models.TextField(blank=False)
-    created_date = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     

@@ -1,23 +1,12 @@
 from rest_framework.permissions import BasePermission
 from rest_framework import permissions
-#class IsAuthorOrReadOnly(BasePermission):
-#    message = 'You must be the author of this post.'
-#    
-#    def has_object_permission(self,request,view,obj):
-#        return obj.Author == request.Profile    
-#    
-#class IsBlogAuthorOrReadOnly(BasePermission):
-#    message = 'You must be the author of this post.'
-#    
-#    def has_object_permission(self,request,view,obj):
-#        return obj.blog.Author == request.Profile
-#    
-#    
-#class BlogPostPermission(BasePermission):
-#    message = "You are not allowed to edit this post."
-#    def has_object_permission(self,request,view,obj):
-#        return obj.author == request.user
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        return  # To not perform the csrf check previously happening
 
 class BlogPostPermission(BasePermission):
     message = "You are not allowed to edit this post. #2"
@@ -54,13 +43,7 @@ class UserBlogPostPermission(BasePermission):
 #        if request.user.profile.role == "3":
 #            return request
         
-        
-        
-#        ('1',('Admin')),
-#        ('2',('Publisher')),
-#        ('3',('Reviewer')),
-#        ('4',('Visitor'))
-        
+
         
 #        if(request.GET.get('user')):
 #            if int(request.GET.get('user')) == request.user.id:
@@ -74,3 +57,22 @@ class UserBlogPostPermission(BasePermission):
 # if a user is accessing all post then he will see all the published post
 # if want to get post of a particular user by "blog?user=3" then he should be loged in
 # admin user can see the post of all the user by "blog?user=3"
+
+
+#class IsAuthorOrReadOnly(BasePermission):
+#    message = 'You must be the author of this post.'
+#    
+#    def has_object_permission(self,request,view,obj):
+#        return obj.Author == request.Profile    
+#    
+#class IsBlogAuthorOrReadOnly(BasePermission):
+#    message = 'You must be the author of this post.'
+#    
+#    def has_object_permission(self,request,view,obj):
+#        return obj.blog.Author == request.Profile
+#    
+#    
+#class BlogPostPermission(BasePermission):
+#    message = "You are not allowed to edit this post."
+#    def has_object_permission(self,request,view,obj):
+#        return obj.author == request.user

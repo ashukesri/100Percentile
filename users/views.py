@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import (
     Profile,
     UserAnswer,
@@ -13,10 +15,14 @@ from .serializers import  (
 #   UserLoginSerialzer
 )
 
+from .permissions import(
+    CsrfExemptSessionAuthentication,   
+)
 from rest_framework.generics import (
     CreateAPIView,
     RetrieveUpdateDestroyAPIView,
-    ListAPIView
+    ListAPIView,
+    RetrieveAPIView,
 )
 
 from rest_framework.views import APIView
@@ -28,16 +34,19 @@ from rest_framework.permissions import(
     IsAdminUser,
     IsAuthenticatedOrReadOnly,
     AllowAny,
-    )
+)
 from django.contrib.auth import get_user_model
 
 #def update_profile(request, user_id):
 #    user = User.objects.get(pk=user_id)
 #    user.save()
 
+
 class UserCreateAPIView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerialzer
+    authentication_classes = (CsrfExemptSessionAuthentication,)
+    
     
 #class UserLoginAPIView(APIView):
 #    permission_class =  [AllowAny]
@@ -54,15 +63,27 @@ class UserCreateAPIView(CreateAPIView):
 
     
 #To see all the users (only admin) (testing purpose only)
-class ProfileListAPIView(ListAPIView):
+
+#class ProfileListAPIView(ListAPIView):
+#    queryset = Profile.objects.all()
+#    serializer_class = ProfileSerializer
+#    permission_class =  [IsAdminUser]
+ 
+    
+class ProfileRetrieveAPIView(RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_class =  [IsAdminUser]
+    permission_class =  [IsAuthenticated]
+    authentication_classes = (CsrfExemptSessionAuthentication,)
     
+    
+
 class UserAnswerCreateAPIView(CreateAPIView):
     queryset = UserAnswer.objects.all()
     serializer_class = UserAnswerSerializer
     permission_classes =  [IsAuthenticated]
+    authentication_classes = (CsrfExemptSessionAuthentication,)
+    
     
     def perform_create(self,serializer):
         serializer.save(user=self.request.user)
@@ -72,6 +93,8 @@ class UserAnswerRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = UserAnswer.objects.all()
     serializer_class = UserAnswerSerializer
     permission_classes =  [IsAdminUser]
+    authentication_classes = (CsrfExemptSessionAuthentication,)
+    
 
 
 #class FollowCreateAPIView(CreateAPIView):

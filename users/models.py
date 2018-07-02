@@ -17,7 +17,7 @@ class Profile(models.Model):
     is_subscribed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    follow= models.ManyToManyField(User,blank=False, related_name="profile_follow")
+    follow= models.ManyToManyField(User,blank=True, related_name="profile_follow")
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):

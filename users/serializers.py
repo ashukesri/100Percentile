@@ -50,8 +50,6 @@ class UserCreateSerialzer(ModelSerializer):
             raise ValidationError("Email already exits")
         return data
     
-        
-
     
 class UserDetailSerializer(ModelSerializer):
     class Meta:
@@ -74,11 +72,15 @@ class UserSerializer(ModelSerializer):
         
 class ProfileSerializer(ModelSerializer):
     user = UserSerializer(many= False,read_only=True)
+#    follower= user.follow_set.all()
+#    follower=user.objects.select_related()
     class Meta:
         model = Profile
         fields=[
             'role' ,
-            'active',
+#            'active',
+#            'follow',
+            'follower',
             'is_subscribed',
             'user',
         ]
@@ -91,7 +93,7 @@ class UserAnswerSerializer(ModelSerializer):
             'answer',
             'subjective_answer',
             'user',
-            'active',
+#            'active',
         ]
 
         read_only_fields = ('user',)

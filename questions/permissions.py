@@ -1,6 +1,12 @@
 from rest_framework.permissions import BasePermission
 from rest_framework import permissions
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
 
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        return  # To not perform the csrf check previously happening
+    
 
 class QuestionPermission(BasePermission):
     message = "You are not allowed to access this question. #"
@@ -35,13 +41,6 @@ class UserBlogPostPermission(BasePermission):
 #    def has_permission(self,request,view):
 #        if request.user.profile.role == "3":
 #            return request
-        
-        
-        
-#        ('1',('Admin')),
-#        ('2',('Publisher')),
-#        ('3',('Reviewer')),
-#        ('4',('Visitor'))
         
         
 #        if(request.GET.get('user')):

@@ -2,6 +2,7 @@ notes.txt
 db.sqlite3
 db.sqlite3__backup
 ngrok
+media/
 db.sqlite3_backup
 users/migrations/
 blogs/migrations/

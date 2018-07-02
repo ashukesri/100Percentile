@@ -5,6 +5,11 @@ from users.models import *
 from django.db import models
 from django.utils import timezone
 from datetime import datetime
+import re
+
+def blog_directory_path(instance, filename):
+    return 'blog/'+re.sub('[-:. ]','',str(datetime.today()))
+    
 class BlogPost(models.Model):
     difficulty = (
         (1, ('Basic')),
@@ -40,11 +45,14 @@ class BlogPost(models.Model):
 
     def __unicode__(self):
         return self.title
+    
+    def __str__(self):
+        return self.title
 
 
 class BlogImage(models.Model):
     blog = models.ForeignKey(BlogPost,on_delete=models.CASCADE,related_name='BlogImages')
-    image = models.ImageField(null=True)
+    image = models.ImageField(upload_to=blog_directory_path,null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -63,5 +71,5 @@ class BlogPostDiscussion(models.Model):
     question = models.ForeignKey(BlogPost,on_delete=models.CASCADE,related_name='BlogPostDiscussions')
     user = models.ForeignKey(User, on_delete=models.CASCADE ,related_name="BlogPostDiscussionUser")
     comment = models.TextField(blank=False)
-    created_date = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

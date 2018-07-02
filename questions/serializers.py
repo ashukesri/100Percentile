@@ -11,7 +11,7 @@ class TopicSerializer(ModelSerializer):
         model = Topic
         fields= [
             'topic',
-            'active',
+#            'active',
         ]
         
 
@@ -21,7 +21,7 @@ class SubTopicSerializer(ModelSerializer):
         fields= [
             'subTopic',
             'topic',
-            'active',
+#            'active',
         ]
 
 class QuestionSolutionSerializer(ModelSerializer):
@@ -66,7 +66,7 @@ class QuestionOptionSerializer(ModelSerializer):
             'is_right_option',
             'answer_sequence',
             'image',
-            'active',
+#            'active',
         ]
         
 
@@ -90,7 +90,7 @@ class QuestionSerializer(ModelSerializer):
             'is_subscribed',
             'thrasoldTime',
             'videoLink',
-            'active',
+#            'active',
             'QuestionImages',
             'QuestionOptions',
         ]
@@ -117,7 +117,7 @@ class QuestionSerializer(ModelSerializer):
         instance.is_subscribed= validated_data.get("is_subscribed", instance.is_subscribed)
         instance.thrasoldTime= validated_data.get("thrasoldTime", instance.thrasoldTime)
         instance.videoLink= validated_data.get("videoLink", instance.videoLink)
-        instance.active= validated_data.get("active", instance.active)
+#        instance.active= validated_data.get("active", instance.active)
 
         if images_data:
             for image_data in images_data.values():
