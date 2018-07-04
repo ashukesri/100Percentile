@@ -14,11 +14,17 @@ class BlogPostPermission(BasePermission):
 #        return False
 
     def has_object_permission(self,request,view,obj):
-        if request.user.profile.role=='4':
-            return obj.author == request.user
-        elif request.user.profile.role=='3':
-            return obj.status !='4'
-        else: return True;
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        if request.user.is_authenticated:
+            if request.user.profile.role=='4':
+                return obj.author == request.user
+            elif request.user.profile.role=='3':
+                return obj.status !='4'
+            else: 
+                return True
+        else:
+            return False
 
     
 class BlogPostListPermission(BasePermission):

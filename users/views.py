@@ -43,7 +43,7 @@ from rest_framework.authentication import(
 class UserCreateAPIView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerialzer
-    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
+    authentication_classes = (CsrfExemptSessionAuthentication)
     
     
 #class UserLoginAPIView(APIView):
