@@ -43,7 +43,8 @@ from rest_framework.authentication import(
 class UserCreateAPIView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerialzer
-    authentication_classes = (CsrfExemptSessionAuthentication)
+    permission_classes =  (AllowAny,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
     
     
 #class UserLoginAPIView(APIView):
@@ -71,7 +72,7 @@ class UserCreateAPIView(CreateAPIView):
 class ProfileRetrieveAPIView(RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_class =  [IsAuthenticated]
+    permission_classes =  [IsAuthenticated]
     authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     
