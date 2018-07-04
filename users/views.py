@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
 from .models import (
     Profile,
@@ -11,8 +15,8 @@ from .serializers import  (
     ProfileSerializer,
     UserSerializer,
     UserCreateSerialzer,
-#    FollowSerializer,
-#   UserLoginSerialzer
+    #FollowSerializer,
+    #UserLoginSerialzer
 )
 
 from .permissions import(
@@ -25,27 +29,21 @@ from rest_framework.generics import (
     RetrieveAPIView,
 )
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
-
 from rest_framework.permissions import(
     IsAuthenticated,
     IsAdminUser,
     IsAuthenticatedOrReadOnly,
     AllowAny,
 )
-from django.contrib.auth import get_user_model
 
-#def update_profile(request, user_id):
-#    user = User.objects.get(pk=user_id)
-#    user.save()
-
+from rest_framework.authentication import(
+    TokenAuthentication,
+)
 
 class UserCreateAPIView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerialzer
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     
 #class UserLoginAPIView(APIView):
@@ -74,7 +72,7 @@ class ProfileRetrieveAPIView(RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_class =  [IsAuthenticated]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     
 
@@ -82,8 +80,7 @@ class UserAnswerCreateAPIView(CreateAPIView):
     queryset = UserAnswer.objects.all()
     serializer_class = UserAnswerSerializer
     permission_classes =  [IsAuthenticated]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
-    
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     def perform_create(self,serializer):
         serializer.save(user=self.request.user)
@@ -93,7 +90,7 @@ class UserAnswerRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = UserAnswer.objects.all()
     serializer_class = UserAnswerSerializer
     permission_classes =  [IsAdminUser]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
 
 

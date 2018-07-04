@@ -27,7 +27,12 @@ from .permissions import (
 )
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+
+from rest_framework.authentication import(
+    SessionAuthentication, 
+    BasicAuthentication,
+    TokenAuthentication,
+)
 from rest_framework.permissions import(
     IsAuthenticated,
     AllowAny,
@@ -35,12 +40,14 @@ from rest_framework.permissions import(
     IsAuthenticatedOrReadOnly,
     )
 
+#########################################################################
 
 class AddPostCreateAPIView(CreateAPIView):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
     permission_classes =  [IsAuthenticated]
-    authentication_classes = (SessionAuthentication, BasicAuthentication,CsrfExemptSessionAuthentication)
+#    authentication_classes = (SessionAuthentication, BasicAuthentication,CsrfExemptSessionAuthentication)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     def perform_create(self,serializer):
         serializer.save(author=self.request.user)
@@ -50,7 +57,7 @@ class AddPostCreateAPIView(CreateAPIView):
 class BlogPostListAPIView(ListAPIView):
     serializer_class = BlogPostSerializer
     permission_classes =  (BlogPostListPermission,)
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     
     def get_queryset(self):
@@ -65,7 +72,7 @@ class UserBlogPostListAPIView(ListAPIView):
     
     serializer_class = BlogPostSerializer
     permission_classes = [IsAuthenticated,]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     def get_queryset(self):
         if self.request.user.profile.role=='4':
@@ -83,7 +90,7 @@ class BlogPostDiscussionCreateAPIView(ListCreateAPIView):
     queryset = BlogPostDiscussion.objects.all()
     serializer_class = BlogPostDiscussionSerializer
     permission_classes =  [IsAuthenticated]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
 
 
@@ -91,7 +98,7 @@ class BlogPostDiscussionRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = BlogPostDiscussion.objects.all()
     serializer_class = BlogPostDiscussionSerializer
     permission_classes =  [IsAuthenticatedOrReadOnly]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
 
     
@@ -101,7 +108,7 @@ class BlogPostRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
     permission_classes =  (BlogPostPermission,)
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     
 # views for the Blog Image
@@ -110,7 +117,7 @@ class BlogImageRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = BlogImage.objects.all()
     serializer_class = BlogImageSerializer
     permission_classes =  [IsAuthenticated]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     
     

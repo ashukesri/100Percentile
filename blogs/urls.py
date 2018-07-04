@@ -33,7 +33,7 @@ from .views import(
 urlpatterns = [
     url(r'^$'                           ,BlogPostListAPIView.as_view()              ,name="posts"),
     url(r'user'                         ,UserBlogPostListAPIView.as_view()          ,name="user_posts"),
-    url(r'add'                          ,AddPostCreateAPIView.as_view()             ,name="post_create"),
+    url(r'create'                          ,AddPostCreateAPIView.as_view()             ,name="post_create"),
     url(r'edit/(?P<pk>\d+)/'            ,BlogPostRUDAPIView.as_view()               ,name="post_edit"),
     url(r'edit-image/(?P<pk>\d+)/'      ,BlogImageRUDAPIView.as_view()              ,name="post_edit_image"),
     

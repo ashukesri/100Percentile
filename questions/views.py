@@ -33,20 +33,24 @@ from rest_framework.permissions import(
     IsAdminUser,
     IsAuthenticatedOrReadOnly,
     )
+
+from rest_framework.authentication import(
+    TokenAuthentication,
+)
 ##########################################################################
 
 class TopicCreateAPIView(CreateAPIView):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
     permission_classes =  [IsAdminUser,]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
 
 
 class TopicRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
     permission_classes =  [IsAdminUser,IsAuthenticatedOrReadOnly,]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
 
     
     
@@ -56,7 +60,7 @@ class SubTopicCreateAPIView(CreateAPIView):
     queryset = SubTopic.objects.all()
     serializer_class = SubTopicSerializer
     permission_classes =  [IsAuthenticated,]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     
 
@@ -64,7 +68,7 @@ class SubTopicRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = SubTopic.objects.all()
     serializer_class = SubTopicSerializer
     permission_classes =  [IsAuthenticatedOrReadOnly,]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
 
 ##########################################################################
@@ -73,7 +77,7 @@ class QuestionSolutionCreateAPIView(ListCreateAPIView):
     queryset = QuestionSolution.objects.all()
     serializer_class = QuestionSolutionSerializer
     permission_classes =  [IsAdminUser,]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     
 
@@ -81,7 +85,7 @@ class QuestionSolutionRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = QuestionSolution.objects.all()
     serializer_class = QuestionSolutionSerializer
     permission_classes =  [IsAdminUser,IsAuthenticatedOrReadOnly,]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
 
     
@@ -91,7 +95,7 @@ class QuestionDiscussionCreateAPIView(ListCreateAPIView):
     queryset = QuestionDiscussion.objects.all()
     serializer_class = QuestionDiscussionSerializer
     permission_classes =  [IsAuthenticated,]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     
     
@@ -100,7 +104,7 @@ class QuestionDiscussionRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = QuestionDiscussion.objects.all()
     serializer_class = QuestionDiscussionSerializer
     permission_classes =  [IsAuthenticatedOrReadOnly,]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
 
 
@@ -112,7 +116,7 @@ class AddQuestionCreateAPIView(CreateAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes =  [IsAuthenticated,]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     def perform_create(self,serializer):
         serializer.save(author=self.request.user) 
@@ -121,7 +125,7 @@ class AddQuestionCreateAPIView(CreateAPIView):
 class QuestionListAPIView(ListAPIView):
     serializer_class = QuestionSerializer
     permission_classes =  [IsAuthenticated,]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     def get_queryset(self):
         if self.request.GET.get('user'):   #accessed by ?user=3 format
@@ -138,7 +142,7 @@ class UserQuestionListAPIView(ListAPIView):
     
     serializer_class = QuestionSerializer
     permission_classes = [IsAuthenticated,]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     def get_queryset(self):
         if self.request.user.profile.role=='4':
@@ -156,7 +160,7 @@ class QuestionRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes =  [IsAuthenticated]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     
 
@@ -167,7 +171,7 @@ class QuestionImageRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = QuestionImage.objects.all()
     serializer_class = QuestionImageSerializer
     permission_classes =  [IsAuthenticated]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     
     
@@ -178,7 +182,7 @@ class QuestionOptionCreateAPIView(CreateAPIView):
     queryset = QuestionOption.objects.all()
     serializer_class = QuestionOptionSerializer
     permission_classes =  [IsAuthenticated]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
 
 
@@ -186,6 +190,6 @@ class QuestionOptionRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = QuestionOption.objects.all()
     serializer_class = QuestionOptionSerializer
     permission_classes =  [IsAuthenticated]
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (TokenAuthentication, CsrfExemptSessionAuthentication)
     
     

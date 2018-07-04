@@ -1,6 +1,5 @@
 from django.conf.urls import url,include
 from django.contrib.auth import views as auth_views     
-#from rest_framework_jwt.views import obtain_jwt_token
 from .views import(     UserAnswerCreateAPIView, 
                    ProfileRetrieveAPIView,
 #                   ProfileListAPIView,
