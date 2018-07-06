@@ -1,54 +1,37 @@
 from django.db import models
 from django.contrib.auth.models import User
 from questions.models import *
-from django.contrib.auth.models import User,BaseUserManager
-from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser
 
-class UserProfileManager(BaseUserManager):
-    def create_user(self,email,password=None):
-        
-        if not email:
-            raise ValueError("Users must have an email address")
-            
-        email=self.normalize_email(email)
-        user=self.model(email=email)
-        
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-    
-    def create_superuser(self,email,password):
-        
-        user=self.create_user(email,password)
-        
-        user.is_superuser = True
-        user.role=1
-        user.save(using=self._db)
-        return user
-        
-    
-class UserProfile(AbstractBaseUser, PermissionsMixin):
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+class Profile(models.Model):
     roleAraay = (
-        (1,('Admin')),
-        (2,('Visitor'))
+        ('1',('Admin')),
+        ('2',('Publisher')),
+        ('3',('Reviewer')),
+        ('4',('Visitor'))
     )
-    email= models.EmailField(max_length=100,unique=True)
-    role = models.CharField(max_length=100,choices=roleAraay,default=2)
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    role = models.CharField(max_length=100,choices=roleAraay,default='4')
     active = models.BooleanField(default=True)
     is_subscribed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    objects = UserProfileManager()
-    
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELD = []
-    
-    def __str__(self):
-        return self.email
 
-    def __unicode__(self):
-        return self.role
+    follow= models.ManyToManyField(User,blank=True, related_name="profile_follow")
 
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
+
+#    users = User.objects.all().select_related('profile')
 
 #class UserProfile(models.Model):
 #    roleAraay = (
@@ -69,10 +52,11 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
 
 class UserAnswer(models.Model):
-    question = models.ForeignKey(Questions,null=False)
-    answer = models.ForeignKey(QuestionAnswers,null=False)
-    answer_sequence = models.PositiveIntegerField(null=True)
-    user = models.ForeignKey(UserProfile)
+    question = models.ForeignKey(Question,null=False)
+    answer = models.ForeignKey(QuestionOption,null=False,blank=True)
+    subjective_answer = models.CharField(max_length=200,blank=True)
+
+    user = models.ForeignKey(User)
     active = models.NullBooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -80,3 +64,16 @@ class UserAnswer(models.Model):
 
     def __unicode__(self):
         return self.role
+    
+#class Follow(models.Model):
+#    follower= models.ForeignKey(User, on_delete=models.CASCADE)
+#    following= models.ForeignKey(User, on_delete=models.CASCADE)
+#    
+    
+    
+    
+    
+    
+    
+    
+    
